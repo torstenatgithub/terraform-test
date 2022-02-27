@@ -1,3 +1,3 @@
 variable "Bucket_Name" {
-  default = "terraform-test-mybucket"
+  default = "tk-terraform-test-mybucket"
 }
