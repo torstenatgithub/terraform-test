@@ -70,26 +70,6 @@ locals {
      "ergo:ecp:environment"      = var.environment
      "ergo:ecp:eks:cluster-name" = local.cluster_name
   }
-
-  node_security_group_rules = {
-    ingress_self_all = {
-      description = "Node to node all ports/protocols"
-      protocol    = "-1"
-      from_port   = 0
-      to_port     = 0
-      type        = "ingress"
-      self        = true
-    }
-    egress_all = {
-      description      = "Node all egress"
-      protocol         = "-1"
-      from_port        = 0
-      to_port          = 0
-      type             = "egress"
-      cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
-    }
-  }
 }
 
 output "cluster_name" {
