@@ -1,0 +1,25 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::tk-tf-state"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::tk-tf-state/terraform-test/terraform.tfstate"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:*"],
+      "Resource": ["arn:aws:s3:::tk-terraform-test-*"]
+    },
+    {
+      "Action": ["dynamodb:DeleteItem", "dynamodb:GetItem", "dynamodb:PutItem"],
+      "Effect": "Allow",
+      "Resource": "arn:aws:dynamodb:eu-west-1:027774295007:table/terraform-state-lock-dynamo"
+    }
+  ]
+}
