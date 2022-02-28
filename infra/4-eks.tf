@@ -2,12 +2,9 @@ module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   version         = "18.5.1"
 
-  # Manage aws-auth ConfigMap manually in kubernetes module because of dependencies to role bindings  
-  manage_aws_auth = false
-
   cluster_name    = local.cluster_name
   cluster_version = var.kubernetes_version
-  subnets         = module.vpc.private_subnets
+  subnet_ids      = module.vpc.private_subnets
 
   vpc_id = module.vpc.vpc_id
 
@@ -17,23 +14,25 @@ module "eks" {
 
   # Settings for a private API endpoint
   # Only IPs from the VPC can call the cluster API
-
-  cluster_create_endpoint_private_access_sg_rule = true
   cluster_endpoint_private_access                = true
-  
-  cluster_endpoint_private_access_cidrs          = [
-    var.vpc_cidr
-  ]
-  
-  cluster_endpoint_private_access_sg             = [
-    module.eks.cluster_primary_security_group_id,
-    module.eks.cluster_security_group_id,
-    module.eks.worker_security_group_id
-  ]
   
   cluster_enabled_log_types = [ "api", "audit", "authenticator", "controllerManager", "scheduler" ]
 
-  # Managed Node Group
+  cluster_addons = {
+    coredns = {
+      resolve_conflicts = "OVERWRITE"
+    }
+    kube-proxy = {}
+    vpc-cni = {
+      resolve_conflicts = "OVERWRITE"
+    }
+  }
+
+  enable_irsa = true
+
+  node_security_group_additional_rules = local.node_security_group_rules
+
+  # EKS managed node group
   eks_managed_node_group_defaults = {
     instance_types  = ["t2.small", "t3.small"]
     disk_size       = 50
