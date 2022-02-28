@@ -42,7 +42,7 @@ module "eks" {
   node_groups = {
     workerpool = {
       iam_role_arn     = aws_iam_role.eks_node_group_role.arn
-      desired_capacity = 1
+      desired_capacity = 2
       max_capacity     = 2
       min_capacity     = 1
       instance_types = ["t2.small"]
