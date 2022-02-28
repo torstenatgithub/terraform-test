@@ -37,6 +37,10 @@ resource "kubernetes_config_map" "aws_auth_configmap" {
   username: "aws:reader:{{SessionName}}"
   groups:
     - "ecp:reader"
+- rolearn: "arn:aws:iam::${local.aws_account_id}:user/admin"
+  username: "aws:owner:{{SessionName}}"
+  groups:
+    - "ecp:owner"
 YAML
     mapUsers      = <<YAML
 []
