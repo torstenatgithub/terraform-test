@@ -1,6 +1,6 @@
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
-  version         = "= 17.20.0"
+  version         = "18.5.1"
 
   # Manage aws-auth ConfigMap manually in kubernetes module because of dependencies to role bindings  
   manage_aws_auth = false
@@ -34,19 +34,38 @@ module "eks" {
   cluster_enabled_log_types = [ "api", "audit", "authenticator", "controllerManager", "scheduler" ]
 
   # Managed Node Group
-  node_groups_defaults = {
-    ami_type  = "AL2_x86_64"
-    disk_size = 50
+  eks_managed_node_group_defaults = {
+    instance_types  = ["t2.small", "t3.small"]
+    disk_size       = 50
+    create_iam_role = false
+    iam_role_arn    = aws_iam_role.eks_node_group_role.arn
   }
-  
-  node_groups = {
-    workerpool = {
-      iam_role_arn     = aws_iam_role.eks_node_group_role.arn
-      desired_capacity = 2
-      max_capacity     = 4
-      min_capacity     = 1
-      instance_types = ["t2.small"]
 
+  eks_managed_node_groups = {
+      workerpool = {
+        # create_launch_template = false
+        # launch_template_name   = ""
+        name             = "worker-pool"
+        ami_type         = "AL2_x86_64"
+        iam_role_arn     = aws_iam_role.eks_node_group_role.arn
+        desired_capacity = 1
+        max_capacity     = 2
+        min_capacity     = 1
+        instance_types = ["t2.small"]
+
+        block_device_mappings  = {
+        "xvda" = {
+          device_name = "/dev/xvda"
+          ebs = {
+            delete_on_termination = true
+            encrypted = false
+            volume_type = "gp3"
+            volume_size = 50
+            # kms_key_id = data.aws_kms_key.ergo_key.arn
+            virtual_name = "ephemeral0"
+          }
+        }
+      }
     }
   }
 }
