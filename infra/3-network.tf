@@ -48,7 +48,7 @@ module "vpc_endpoints" {
 
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.vpc.private_subnets
-  security_group_ids = [ module.vpc.default_security_group_id, module.eks.worker_security_group_id, module.eks.cluster_primary_security_group_id ]
+  security_group_ids = [ module.vpc.default_security_group_id, module.eks.node_security_group_id, module.eks.cluster_primary_security_group_id ]
 
 # When using VPC endpoints in private subnets, you must create endpoints for com.amazonaws.region.ecr.api, com.amazonaws.region.ecr.dkr, and a gateway endpoint for Amazon S3.
 # https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html  
