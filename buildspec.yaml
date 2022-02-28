@@ -3,12 +3,14 @@ version: 0.2
 phases:
   install:
     commands:
-      - "apt install unzip -y"
-      - "wget https://releases.hashicorp.com/terraform/1.1.6/terraform_1.1.6_linux_amd64.zip"
-      - "unzip terraform_1.1.6_linux_amd64.zip"
-      - "mv terraform /usr/local/bin/"
+      - apt-get update && apt-get install -y gnupg software-properties-common curl
+      - curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+      - apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+      - apt-get update && sudo apt-get install terraform
+
   pre_build:
     commands:
+      - terraform version
       - terraform init
 
   build:
