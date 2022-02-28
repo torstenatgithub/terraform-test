@@ -10,12 +10,13 @@ phases:
 
   pre_build:
     commands:
+      - cd infra
       - terraform version
       - terraform init
 
   build:
     commands:
-      - terraform $TF_COMMAND -auto-approve
+      - terraform $TF_COMMAND -auto-approve -var-file="ecp-eks.tfvars"
 
   post_build:
     commands:
