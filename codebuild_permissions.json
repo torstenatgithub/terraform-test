@@ -20,6 +20,16 @@
       "Action": ["dynamodb:DeleteItem", "dynamodb:GetItem", "dynamodb:PutItem"],
       "Effect": "Allow",
       "Resource": "arn:aws:dynamodb:eu-west-1:027774295007:table/terraform-state-lock-dynamo"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["iam:*"],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": ["iam:*user*", "iam:*group*"],
+      "Resource": "*"
     }
   ]
 }
