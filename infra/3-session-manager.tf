@@ -19,8 +19,9 @@ data "aws_iam_policy_document" "ssm_key_session_data_encryption" {
     principals {
       type        = "AWS"
       identifiers = [ 
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/engineer",
+        # "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
+        # "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/engineer"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/admin"
       ]
     }
     resources = [
@@ -51,8 +52,9 @@ data "aws_iam_policy_document" "ssm_key_session_data_logs_encryption" {
     principals {
       type        = "AWS"
       identifiers = [ 
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/engineer",
+        # "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
+        # "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/engineer"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/admin"
       ]
     }
     resources = [
